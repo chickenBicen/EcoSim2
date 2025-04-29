@@ -1,0 +1,26 @@
+# Clang-Format Configuration
+
+BasedOnStyle: LLVM
+IndentWidth: 4                # Standard 4-space indentation
+TabWidth: 4                   # Matching width for tabs
+UseTab: Never                # Use spaces, not tabs
+ColumnLimit: 120             # Wrap lines longer than 100 chars
+BreakBeforeBraces: Attach     # Braces on the same line
+PointerAlignment: Left        # Pointer stars and references on the left (int* ptr)
+AllowShortFunctionsOnASingleLine: InlineOnly # Small functions on a single line
+SortIncludes: true            # Sort includes automatically
+SpaceBeforeParens: ControlStatements  # No space before parentheses in control statements (if, for)
+ReflowComments: true         # Rewrap comments to fit within column limit
+
+AlignTrailingComments: true
+
+AllowShortBlocksOnASingleLine: true
+
+
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCtorInitializerColon: true
+
+SeparateDefinitionBlocks: Always
+MaxEmptyLinesToKeep: 1
+
+IndentWrappedFunctionNames: true

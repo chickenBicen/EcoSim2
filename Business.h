@@ -9,7 +9,7 @@
 #include <vector>
 
 class Business {
-public:
+  public:
     explicit Business(std::string name, std::string description = {});
 
     ~Business() = default;                              // Destructor
@@ -38,12 +38,14 @@ public:
     std::vector<std::string> productNames() const; // Get product names of the business
     std::vector<double> productPrices() const;     // Get product prices of the business
 
+    void addBalance(double amount); // Add balance to the business
+
     void addProduct(const std::string& product, double price); // Add a product to the business
     void removeProduct(const std::string& product);            // Remove a product from the business
 
     void update(); // Update cycle for the business
 
-private:
+  private:
     const double INITIAL_STOCK_PRICE = 100.0; // Initial stock price of the business
     double stockPrice_ = INITIAL_STOCK_PRICE; // Current stock price of the business
     std::string name_;

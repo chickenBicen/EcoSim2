@@ -79,11 +79,16 @@ const auto& Business::resupplyRates() const {
 }
 
 const auto& Business::InitialProductPrices() const {
-    return initialProductPrices_; // Return the initial product prices of the business
+    return initialProductPrices_; // Return the initial product prices of the
+                                  // business
 }
 
 const auto& Business::products() const {
     return products_; // Return the products of the business
+}
+
+void Business::addBalance(double amount) {
+    balance_ += amount; // Add the specified amount to the business balance
 }
 
 std::vector<std::string> Business::productNames() const {
@@ -165,7 +170,7 @@ void Business::update() {
         auto resupplyIt = resupplyRates_.find(it->first); // Find the product in the resupply rates map
         if (resupplyIt != resupplyRates_.end()) {
             double resupplyRate = resupplyIt->second;          // Get the resupply rate of the product
-            supply_[it->first] += resupplyRate * randomFactor; // Update the supply of the product
+            supply_[it->first] += static_cast<int>(resupplyRate * randomFactor); // Update the supply of the product
         }
     }
 }

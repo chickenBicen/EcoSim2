@@ -95,6 +95,7 @@ double Npc::buy(Business& business, std::string& product, int amount) {
     balance_ -= business.supply(product) * amount; // Deduct the cost from the Npc's balance
 
     business.setSupply(product, business.supply(product) - amount); // Reduce the supply in the business
+    business.addBalance(amount * business.supply(product));         // Add the cost to the business balance
 
     std::cout << "Bought " << amount << " of " << product << " from " << business.name() << std::endl;
 
@@ -175,8 +176,38 @@ void Npc::update(std::vector<Business*>& businesses) {
     for (auto& business : businesses) {
         double roll = dis(gen);                                 // Generate a random factor
         if (roll > 0.5) {                                       // 50% chance to buy stocks
-            int amount = static_cast<int>(dis(gen) * balance_); // Random amount to buy (0-10)
+            int amount = static_cast<int>(dis(gen) * balance_ / business->stockPrice()); // Random amount to buy (0-10)
             buyStock(business, amount);                         // Buy the stocks based on the random factor
+        }
+    }
+
+    double roll = dis(gen); // Generate a random factor
+    // 50% chance to buy products from businesses
+    if (roll > 0.5) {
+        for (auto& business : businesses) {
+            int product_num = static_cast<int>(dis(gen) * business->productNames().size()); // Random product number
+            int amount = static_cast<int>(dis(gen) * 10);                               // Random amount to buy (0-10)
+
+            std::string product = business->productNames()[product_num]; // Get the product name
+
+            buy(*business, product, amount); // Buy the product from the business
+        }
+    }
+
+    if (roll > 0.7) { // 30% chance to create a new business
+        std::string newBusinessName =
+            "Business" + std::to_string(ownedBusinesses_.size() + 1); // Generate a new business name
+        createBusiness(newBusinessName);                              // Create a new business
+
+        businesses.push_back(getBusiness(newBusinessName)); // Add the new business to the list of businesses
+    }
+
+    if (roll > 0.9) { // 20% chance to sell a business
+        if (!ownedBusinesses_.empty()) {
+            int business_num = static_cast<int>(dis(gen) * ownedBusinesses_.size()); // Random business number
+            Business* business = ownedBusinesses_[business_num];                     // Get the business
+            ownedBusinesses_.erase(ownedBusinesses_.begin() + business_num); // Remove the business from the list
+            delete business;                                                 // Delete the business object
         }
     }
 }
