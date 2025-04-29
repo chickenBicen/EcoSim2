@@ -12,6 +12,12 @@ Npc::Npc(std::string name) : balance_(0), score_(0), name_(name), INTEREST_RATE(
 }
 
 Npc::~Npc() {
+    // Destructor
+    // Clean up any resources if needed
+    for (auto& business : ownedBusinesses_) {
+        delete business; // Delete the business object
+    }
+    ownedBusinesses_.clear(); // Clear the vector of owned businesses
 }
 
 void Npc::setName(const std::string& name) {
@@ -134,7 +140,7 @@ Business* Npc::getBusiness(const std::string& name) const {
     return nullptr; // Business not found
 }
 
-void Npc::createBusiness(std::string& name) {
+Business* Npc::createBusiness(std::string& name) {
     if (!(balance_ > 10000)) {
         std::cout << "Not enough balance to create a business." << std::endl;
         // Return the first business if not enough balance
@@ -143,6 +149,7 @@ void Npc::createBusiness(std::string& name) {
     ownedBusinesses_.push_back(business);    // Add to the Npc's list of businesses
     Business& returnBus = *business;
     // Return the created business
+    return &returnBus;
 }
 
 void Npc::update(std::vector<Business*>& businesses) {
@@ -206,8 +213,7 @@ void Npc::update(std::vector<Business*>& businesses) {
         if (!ownedBusinesses_.empty()) {
             int business_num = static_cast<int>(dis(gen) * ownedBusinesses_.size()); // Random business number
             Business* business = ownedBusinesses_[business_num];                     // Get the business
-            ownedBusinesses_.erase(ownedBusinesses_.begin() + business_num); // Remove the business from the list
-            delete business;                                                 // Delete the business object
+            ownedBusinesses_.erase(ownedBusinesses_.begin() + business_num); // Remove the business from the 
         }
     }
 }

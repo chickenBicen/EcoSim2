@@ -86,7 +86,7 @@ public:
      * * @param name The name of the business to create.
      * * @note This function creates a new business and adds it to the NPC's list of businesses.
      */
-    void createBusiness(std::string& name); // Add a business to the Npc
+    Business* createBusiness(std::string& name); // Add a business to the Npc
 
     void update(std::vector<Business*>& ActiveBusinesses); // update cycle for the Npc
 
